@@ -269,7 +269,8 @@ void Menu(){
 
   tft.drawBitmap(menuX[0],menuY,item_selected_background,72,24,TFT_WHITE);
 
-  //INSERT MUSIC CODE
+  Music();
+	
   while (MainMenuState = true) {
 
     if ((digitalRead(ButtonDOWN) == LOW) && (button_D_clicked == 0)) { // down button clicked - jump to next menu item
