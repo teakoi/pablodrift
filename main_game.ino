@@ -19,8 +19,8 @@ LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
 int carw = 34;
 int carh = 30;
 
-#define Truckh 21
-#define Truckw 34
+#define truckh 21
+#define truckw 34
 
 int angle = 0;
 
@@ -86,7 +86,7 @@ void setup() {
 
     img.createSprite(carw, carh);
     under.createSprite(carw, carh);
-    enemy.createSprite(Truckw, Truckh);
+    enemy.createSprite(truckw, truckh);
 
     //Draws the bg:
     DrawRoad();
@@ -112,22 +112,28 @@ void setup() {
 
 
 
+
+
 /*dont do under set swap bytes when bitmap is 16bit colour
 when bitmap is 16bit colour, you can leave transparent as transparent in the pixel art, 
 and no need to call colour with the function, nor to fill sprite. both do nothing*/
 
 void loop(){
-  lcd.setCursor(0, 0);
-  lcd.print("oof");
-   
-  lcd.setCursor(0, 1);
-  lcd.print("boob.");
 
   while (GameState = true){
     bool ButtonUPState = digitalRead(ButtonUP) == LOW;
     bool ButtonDOWNState = digitalRead(ButtonDOWN) == LOW;
 
+    Enemy();
+    //for some reason the enemy code doesnt work ;-;,,, gotta fix that.
+
     Lanes();
+
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Score:");
+    lcd.setCursor(0, 1);
+    lcd.print("Highscore:");
     
     if (digitalRead (ButtonUP) == LOW){
     PlayerY = PlayerY + PlayerSpeed;
@@ -205,8 +211,8 @@ void loop(){
     img.pushRotated(&under,angle);
     under.pushSprite(PlayerX,PlayerY);
 
-    //Enemy:
-    Enemy();
+
+    //CheckCollision();
 
   }
 
@@ -218,7 +224,7 @@ void loop(){
 void Enemy(){
 
   for (int i: EnemyY){
-    enemy.pushSprite(EnemyX,Enemy[i]);
+    enemy.pushImage(EnemyX,EnemyY[i], truckw, truckh, truck);
   }
 
   EnemyX = EnemyX-EnemySpeed;
@@ -229,5 +235,31 @@ void Enemy(){
     EnemyX = 480;
   }
 
+}
+
+
+void CheckCollision(){
+  int PlayerBottomLeft = PlayerY + carh;
+
+
+
+  //enemy on top:
+  if (PlayerX <= EnemyX && (PlayerX +carw) <= (EnemyX + truckw) &&
+      PlayerY <= (EnemyY + truckh)) {
+      PlayerY = (EnemyY + truckh);}
+  //enemy below
+  else if (PlayerX <= EnemyX && (PlayerX +carw) <= (EnemyX + truckw) &&
+      (PlayerY + carh) >= EnemyY) {
+      PlayerBottomLeft = EnemyY; }
+  //enemy on front from top
+  else if (PlayerY >= EnemyY &&
+          (PlayerY + carh)  >= (EnemyY + carh) &&
+          (EnemyX <= (PlayerX + carw))) {
+          PlayerX = PlayerX - 1; }
+  // enemy on front from below
+  else if (PlayerY >= EnemyY &&
+          (PlayerY + carh) <= (EnemyY + truckh) &&
+          (EnemyX <= (PlayerX + carw))) {
+          PlayerX = PlayerX -1; }
 }
 
