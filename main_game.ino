@@ -67,7 +67,7 @@ bool PauseState = false;
 /* when pause is true, save and pause game, display pause screen
 when false, game runs*/
 
-//Add code for main menu to run while menu state = 1
+bool GaveOverState = false;
 
 void setup() {
 
@@ -197,8 +197,8 @@ void loop(){
         millis() - ButtonUPStartTime >= HOLD_TIME &&
         millis() - ButtonDOWNStartTime >= HOLD_TIME) {
       // run pause function
-      GameState = 0;
-      PauseState = 1;
+      GameState = false;
+      PauseState = true;
       //change the pause state if they continue game or quit
       Pause();
     }
@@ -212,7 +212,11 @@ void loop(){
     under.pushSprite(PlayerX,PlayerY);
 
 
-    //CheckCollision();
+    if (CheckCollision() == true){
+      GameStale == false;
+      GameOverState == true;
+      GameOver();
+    }
 
   }
 
