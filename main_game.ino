@@ -37,7 +37,6 @@ int PlayerY = (HEIGHT/2 - (carh/2));
 const int ButtonUP = 2 ;
 const int ButtonDOWN = 3 ;
 
-
 const unsigned long HOLD_TIME = 5000; // hold time in milliseconds
 
 unsigned long ButtonUPStartTime = 0;
@@ -68,6 +67,8 @@ bool PauseState = false;
 when false, game runs*/
 
 bool GaveOverState = false;
+
+unsigned long start, finished, elapsed;
 
 void setup() {
 
@@ -103,6 +104,9 @@ void setup() {
     //rotation (drifting)
     tft.setPivot(240, (tft.height()/2));
     /* rotation works but leaves bits of car trail at corners*/
+    
+    start=millis();
+    delay(1000);
 
   }
 
