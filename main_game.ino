@@ -207,6 +207,7 @@ void loop(){
       Pause();
     }
     //End Pause code section
+    //Time Calculations not included in pause
 
 
     //player:
@@ -217,8 +218,8 @@ void loop(){
 
 
     if (CheckCollision() == true){
-      GameStale == false;
-      GameOverState == true;
+      GameState = false;
+      GameOverState = true;
       GameOver();
     }
 
